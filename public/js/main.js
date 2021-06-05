@@ -1,7 +1,7 @@
 const chatForm = document.getElementById("chat-form")
-const chatMessages = document.getElementById("chat-messages")
 const roomName = document.getElementById("room-name")
 const usersList = document.getElementById("users")
+let chatMessages = document.getElementById("chat-messages")
 
 const params = () => {
 	let search = window.location.href.split("username=")
@@ -21,6 +21,7 @@ socket.emit("joinRoom", { username, room })
 socket.on("roomUsers", ({ room, users }) => {
 	outputRoomName(room)
 	outputUsers(users)
+	setChatMessagesHeightDynamically()
 })
 
 socket.on("message", (message) => {
@@ -38,12 +39,6 @@ chatForm.addEventListener("submit", (e) => {
 })
 
 function outputMessage(message) {
-	// <div class="message">
-	// 	<p class="meta">
-	// 		Mary <span>9:15pm</span>
-	// 	</p>
-	// 	<p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, repudiandae.</p>
-	// </div>
 	const div = document.createElement("div")
 	div.classList.add("message")
 	const pMeta = document.createElement("p")
@@ -77,4 +72,14 @@ function outputUsers(users) {
 		li.innerText = user.username
 		usersList.appendChild(li)
 	})
+}
+
+window.addEventListener("resize", setChatMessagesHeightDynamically)
+
+function setChatMessagesHeightDynamically() {
+	let chatHeaderHeight = document.querySelector(".chat-header").offsetHeight
+	let chatFooterHeight = document.querySelector(".chat-footer").offsetHeight
+
+	let messagesHeight = window.innerHeight - chatHeaderHeight - chatFooterHeight
+	chatMessages.style.height = `${messagesHeight}px`
 }
