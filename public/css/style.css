@@ -210,14 +210,3 @@ a {
 .switch-form a {
 	color: var(--dark-color-a);
 }
-
-/* 
-@media (max-width: 700px) {
-	.chat-main {
-		display: block;
-	}
-
-	.chat-sidebar {
-		display: none;
-	}
-} */
